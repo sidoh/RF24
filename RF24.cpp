@@ -734,7 +734,7 @@ void RF24::startListening(void)
 }
 
 /****************************************************************************/
-static const uint8_t child_pipe_enable[] PROGMEM =
+static const uint8_t child_pipe_enable[] =
 {
   ERX_P0, ERX_P1, ERX_P2, ERX_P3, ERX_P4, ERX_P5
 };
@@ -759,7 +759,7 @@ void RF24::stopListening(void)
 	powerUp();
   }
   #endif
-  write_register(EN_RXADDR,read_register(EN_RXADDR) | _BV(pgm_read_byte(&child_pipe_enable[0]))); // Enable RX on pipe0
+  write_register(EN_RXADDR,read_register(EN_RXADDR) | _BV(child_pipe_enable[0])); // Enable RX on pipe0
   
   //delayMicroseconds(100);
 
@@ -1186,7 +1186,7 @@ void RF24::openReadingPipe(uint8_t child, uint64_t address)
     // Note it would be more efficient to set all of the bits for all open
     // pipes at once.  However, I thought it would make the calling code
     // more simple to do it this way.
-    write_register(EN_RXADDR,read_register(EN_RXADDR) | _BV(pgm_read_byte(&child_pipe_enable[child])));
+    write_register(EN_RXADDR,read_register(EN_RXADDR) | _BV(child_pipe_enable[child]));
   }
 }
 
@@ -1226,7 +1226,7 @@ void RF24::openReadingPipe(uint8_t child, const uint8_t *address)
     // Note it would be more efficient to set all of the bits for all open
     // pipes at once.  However, I thought it would make the calling code
     // more simple to do it this way.
-    write_register(EN_RXADDR,read_register(EN_RXADDR) | _BV(pgm_read_byte(&child_pipe_enable[child])));
+    write_register(EN_RXADDR,read_register(EN_RXADDR) | _BV(child_pipe_enable[child]));
 
   }
 }
@@ -1235,7 +1235,7 @@ void RF24::openReadingPipe(uint8_t child, const uint8_t *address)
 
 void RF24::closeReadingPipe( uint8_t pipe )
 {
-  write_register(EN_RXADDR,read_register(EN_RXADDR) & ~_BV(pgm_read_byte(&child_pipe_enable[pipe])));
+  write_register(EN_RXADDR,read_register(EN_RXADDR) & ~_BV(child_pipe_enable[pipe]));
 }
 
 /****************************************************************************/
